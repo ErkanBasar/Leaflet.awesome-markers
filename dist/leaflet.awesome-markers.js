@@ -26,12 +26,13 @@
             shadowAnchor: [10, 12],
             shadowSize: [36, 16],
             className: 'awesome-marker',
-            prefix: 'glyphicon',
+            prefix: 'fa',
             spinClass: 'fa-spin',
             extraClasses: '',
-            icon: 'home',
-            markerColor: 'blue',
-            iconColor: 'white'
+            icon: 'twitter',
+            markerColor: 'lightgreen',
+            iconColor: 'white',
+            tagCount: ''
         },
 
         initialize: function (options) {
@@ -42,8 +43,10 @@
             var div = document.createElement('div'),
                 options = this.options;
 
-            if (options.icon) {
-                div.innerHTML = this._createInner();
+            if(options.tagCount) {
+                div.innerHTML = this._createInnerText();
+            } else if(options.icon) {
+                div.innerHTML = this._createInnerIcon();
             }
 
             if (options.bgPos) {
@@ -55,7 +58,7 @@
             return div;
         },
 
-        _createInner: function() {
+        _createInnerIcon: function() {
             var iconClass, iconSpinClass = "", iconColorClass = "", iconColorStyle = "", options = this.options;
 
             if(options.icon.slice(0,options.prefix.length+1) === options.prefix + "-") {
@@ -77,6 +80,19 @@
             }
 
             return "<i " + iconColorStyle + "class='" + options.extraClasses + " " + options.prefix + " " + iconClass + " " + iconSpinClass + " " + iconColorClass + "'></i>";
+        },
+
+        _createInnerText: function() {
+            var options = this.options;
+            var textColorStyle;
+
+            if(options.iconColor) {
+                  textColorStyle = "style='color: "  + options.iconColor + ";'";
+            } else {
+                  textColorStyle = "style='color: white;'";
+            }
+
+            return "<i " + textColorStyle + " class='" + options.extraClasses + "'>" + options.tagCount + "</i>";
         },
 
         _setIconStyles: function (img, name) {
@@ -114,12 +130,9 @@
             return div;
       }
     });
-        
+
     L.AwesomeMarkers.icon = function (options) {
         return new L.AwesomeMarkers.Icon(options);
     };
 
 }(this, document));
-
-
-
